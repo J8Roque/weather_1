@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <title>SkyScan Radar</title>
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SkyScan Radar</title>
+  <meta name="description" content="Responsive weather radar + 7-day forecast. Built with Leaflet + RainViewer + Open-Meteo." />
 
-  <!-- Leaflet CSS -->
+  <!-- Leaflet -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -15,53 +16,111 @@
 
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <header class="app-header">
-    <h1>SkyScan Radar</h1>
-    <p class="subtitle">Responsive web radar viewer powered by RainViewer</p>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">SKY</div>
+      <div class="brand-text">
+        <div class="title">SkyScan Radar</div>
+        <div class="subtitle">Radar + 7‑day forecast • Web & mobile</div>
+      </div>
+    </div>
+
+    <form id="search-form" class="search" autocomplete="off">
+      <input id="place-input" type="search" placeholder="Search city, ZIP, or place…" aria-label="Search location" />
+      <button class="btn" type="submit">Go</button>
+      <div id="search-results" class="search-results" hidden></div>
+    </form>
+
+    <div class="actions">
+      <button id="locate-btn" class="btn btn-primary" type="button">Locate</button>
+      <button id="theme-toggle" class="btn" type="button" aria-label="Toggle theme">
+        <span id="theme-icon" aria-hidden="true">☾</span>
+      </button>
+    </div>
   </header>
 
-  <main class="app-main">
-    <section id="map-container">
-      <div id="map"></div>
+  <main class="layout">
+    <section class="map-card">
+      <div id="map" class="map"></div>
+
+      <div class="map-badges">
+        <div id="status-pill" class="pill">Loading radar…</div>
+        <div id="frame-pill" class="pill pill-muted">Frame: —</div>
+      </div>
+
+      <button id="controls-fab" class="fab" type="button" aria-label="Toggle controls">Controls</button>
     </section>
 
-    <aside id="controls">
-      <h2>Controls</h2>
+    <aside id="controls" class="controls">
+      <div class="panel">
+        <div class="panel-title">Radar controls</div>
 
-      <button id="locate-btn">Use my location</button>
-
-      <div class="control-group">
-        <label for="time-slider">Radar time</label>
-        <input type="range" id="time-slider" min="0" max="0" value="0" />
-        <div class="time-labels">
-          <span id="time-label">Loading frames…</span>
+        <div class="row">
+          <button id="prev-frame" class="btn" type="button">◀</button>
+          <button id="play-pause" class="btn btn-primary" type="button">Play</button>
+          <button id="next-frame" class="btn" type="button">▶</button>
         </div>
-      </div>
 
-      <div class="control-group">
-        <span>Animation</span>
-        <div class="btn-row">
-          <button id="prev-frame">&laquo;</button>
-          <button id="play-pause">Play</button>
-          <button id="next-frame">&raquo;</button>
+        <div class="field">
+          <label for="time-slider">Timeline</label>
+          <input id="time-slider" type="range" min="0" max="0" value="0" />
+          <div class="hint" id="time-label">—</div>
         </div>
-      </div>
 
-      <div class="control-group">
-        <label for="opacity-slider">Radar opacity</label>
-        <input type="range" id="opacity-slider" min="0" max="1" step="0.1" value="0.8" />
+        <div class="field">
+          <label for="opacity-slider">Radar opacity</label>
+          <input id="opacity-slider" type="range" min="0" max="1" step="0.05" value="0.80" />
+        </div>
+
+        <div class="row split">
+          <div class="field">
+            <label for="speed">Speed</label>
+            <select id="speed">
+              <option value="900">Smooth</option>
+              <option value="650" selected>Normal</option>
+              <option value="450">Fast</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="units">Units</label>
+            <select id="units">
+              <option value="us" selected>°F / mph</option>
+              <option value="metric">°C / km/h</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="panel-title">Forecast</div>
+        <div class="hint">Forecast uses the map center (or your searched location).</div>
+        <button id="refresh-forecast" class="btn" type="button">Refresh forecast</button>
       </div>
     </aside>
   </main>
 
-  <footer class="app-footer">
+  <section class="forecast-wrap">
+    <div class="forecast-head">
+      <div>
+        <div class="forecast-title">7‑day forecast</div>
+        <div id="forecast-subtitle" class="forecast-subtitle">—</div>
+      </div>
+      <div id="forecast-status" class="forecast-status">Loading…</div>
+    </div>
+
+    <div id="forecast" class="forecast"></div>
+  </section>
+
+  <footer class="footer">
     <small>
-      Base map © OpenStreetMap contributors. Radar © RainViewer.
+      Base map © OpenStreetMap contributors • Radar © RainViewer • Forecast © Open‑Meteo
     </small>
   </footer>
 
-  <!-- Leaflet JS -->
+  <!-- Leaflet -->
   <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
