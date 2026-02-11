@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SkyScan Radar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>SkyScan Radar</h1>
+    <p class="subtitle">Responsive web radar viewer powered by RainViewer</p>
+  </header>
+
+  <main class="app-main">
+    <section id="map-container">
+      <div id="map"></div>
+    </section>
+
+    <aside id="controls">
+      <h2>Controls</h2>
+
+      <button id="locate-btn">Use my location</button>
+
+      <div class="control-group">
+        <label for="time-slider">Radar time</label>
+        <input type="range" id="time-slider" min="0" max="0" value="0" />
+        <div class="time-labels">
+          <span id="time-label">Loading frames…</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span>Animation</span>
+        <div class="btn-row">
+          <button id="prev-frame">&laquo;</button>
+          <button id="play-pause">Play</button>
+          <button id="next-frame">&raquo;</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="opacity-slider">Radar opacity</label>
+        <input type="range" id="opacity-slider" min="0" max="1" step="0.1" value="0.8" />
+      </div>
+    </aside>
+  </main>
+
+  <footer class="app-footer">
+    <small>
+      Base map © OpenStreetMap contributors. Radar © RainViewer.
+    </small>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <script src="app.js"></script>
+</body>
+</html>
