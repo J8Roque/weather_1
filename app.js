@@ -1,5 +1,5 @@
 // ===== CONFIG =====
-const RAINVIEWER_API_KEY = "YOUR_RAINVIEWER_API_KEY_HERE"; // TODO: replace
+const RAINVIEWER_API_KEY = "e359f2fe3f42e04fad954528feb67b37"; // TODO: replace
 const RAINVIEWER_API_URL = "https://api.rainviewer.com/public/weather-maps.json";
 
 // ===== MAP INIT =====
