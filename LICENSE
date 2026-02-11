@@ -1,10 +1,5 @@
 
-The steps for running a Leaflet-based static site via a local HTTP server and deploying to GitHub Pages follow common static hosting practices.[8][9][10]
-
-***
-
-## 6. LICENSE (MIT)
-
+## LICENSE (MIT)
 ```text
 MIT License
 
